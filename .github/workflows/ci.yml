@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --upgrade pip && pip install -e ".[dev]"
+      - run: ruff check .
+      - run: ruff format --check .
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
+        django-version: ['4.2', '5.0', '5.1', '5.2']
+        exclude:
+          # Django 4.2 and 5.0 predate Python 3.13.
+          - { python-version: '3.13', django-version: '4.2' }
+          - { python-version: '3.13', django-version: '5.0' }
+    name: py${{ matrix.python-version }} / dj${{ matrix.django-version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - run: pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - run: pip install "django~=${{ matrix.django-version }}.0"
+
+      - name: Show versions
+        run: python -c "import django, fopost; print('django', django.get_version(), '/ fopost', fopost.__version__)"
+
+      - run: pytest
