@@ -25,13 +25,13 @@ def test_a_configured_secret_is_quiet(settings: Any) -> None:
 
 
 def test_a_plaintext_base_url_warns(settings: Any) -> None:
-    settings.FOPOST = {**settings.FOPOST, "BASE_URL": "http://api.example.com/api/v1"}
+    settings.FOPOST = {**settings.FOPOST, "BASE_URL": "http://api.example.com/v1"}
 
     assert INSECURE_BASE_URL_ID in ids(settings)
 
 
 def test_localhost_over_http_is_fine(settings: Any) -> None:
-    settings.FOPOST = {**settings.FOPOST, "BASE_URL": "http://localhost:8080/api/v1"}
+    settings.FOPOST = {**settings.FOPOST, "BASE_URL": "http://localhost:8080/v1"}
 
     assert INSECURE_BASE_URL_ID not in ids(settings)
 

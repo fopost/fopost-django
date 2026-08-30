@@ -14,7 +14,7 @@ def test_get_client_is_memoized(stub_api: Any) -> None:
 def test_settings_reach_the_sdk_client(settings: Any, stub_api: Any) -> None:
     settings.FOPOST = {
         **settings.FOPOST,
-        "BASE_URL": "https://api.test.fopost.com/api/v1/",
+        "BASE_URL": "https://api.test.fopost.com/v1/",
         "MAX_RETRIES": 5,
         "TIMEOUT": 12.5,
     }
@@ -22,7 +22,7 @@ def test_settings_reach_the_sdk_client(settings: Any, stub_api: Any) -> None:
     built = get_client()
 
     assert isinstance(built, Fopost)
-    assert built.base_url == "https://api.test.fopost.com/api/v1"
+    assert built.base_url == "https://api.test.fopost.com/v1"
     assert built._http.max_retries == 5
     assert built._http.api_key == "fp_test_key"
 

@@ -4,6 +4,7 @@ from typing import Any
 
 import pytest
 from django.core.exceptions import ImproperlyConfigured
+from fopost import DEFAULT_BASE_URL
 
 from fopost_django import get_settings
 from fopost_django.apps import FopostConfig
@@ -52,7 +53,9 @@ def test_defaults_fill_in_the_rest(settings: Any) -> None:
     settings.FOPOST = {"API_KEY": "fp_x"}
     resolved = get_settings()
 
-    assert resolved.base_url == "https://api.fopost.com/api/v1"
+    # The default is whatever the parent SDK ships, not a literal restated here;
+    # the prefix itself is the SDK's own test to make.
+    assert resolved.base_url == DEFAULT_BASE_URL
     assert resolved.timeout == 30.0
     assert resolved.max_retries == 3
     assert resolved.webhook_secret is None

@@ -17,7 +17,7 @@ TEMPLATES: list[dict[str, object]] = []
 
 FOPOST = {
     "API_KEY": "fp_test_key",
-    "BASE_URL": "https://api.test.fopost.com/api/v1",
+    "BASE_URL": "https://api.test.fopost.com/v1",
     "WEBHOOK_SECRET": "whsec_test",
     "DEFAULT_WORKSPACE_ID": "ws_default",
 }

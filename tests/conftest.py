@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 
 import httpx
@@ -8,7 +9,9 @@ import pytest
 
 from fopost_django import reset_client
 
-API_PREFIX = "/api/v1"
+# The parent SDK owns the version prefix on every request path. Strip whatever
+# it sends so the stubs match on the resource suffix alone.
+API_PREFIX = re.compile(r"^(?:/api)?/v\d+")
 
 
 class StubApi:
@@ -23,9 +26,7 @@ class StubApi:
 
     def handle(self, request: httpx.Request) -> httpx.Response:
         self.requests.append(request)
-        path = request.url.path
-        if path.startswith(API_PREFIX):
-            path = path[len(API_PREFIX) :]
+        path = API_PREFIX.sub("", request.url.path)
         route = self.routes.get((request.method, path))
         if route is None:
             return httpx.Response(
