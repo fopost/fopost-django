@@ -60,6 +60,10 @@ include = ["src/fopost_django", "tests", "examples", "README.md", "LICENSE"]
 DJANGO_SETTINGS_MODULE = "tests.settings"
 testpaths = ["tests"]
 addopts = "-q"
+# pytest-django resolves DJANGO_SETTINGS_MODULE before collection puts the rootdir on
+# sys.path, so `tests.settings` is unimportable under the bare `pytest` entry point.
+# (`python -m pytest` masks this by adding the cwd itself.)
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 100
