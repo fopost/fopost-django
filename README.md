@@ -48,7 +48,7 @@ FOPOST = {
 | Key | Default | Env fallback | What it does |
 | --- | --- | --- | --- |
 | `API_KEY` | none, **required** | `FOPOST_API_KEY` | Your API key |
-| `BASE_URL` | `https://api.fopost.com/api/v1` | `FOPOST_BASE_URL` | API root |
+| `BASE_URL` | `https://api.fopost.com/v1` | `FOPOST_BASE_URL` | API root |
 | `TIMEOUT` | `30.0` | — | Seconds to wait for one request |
 | `MAX_RETRIES` | `3` | — | Attempts for a rate limited request |
 | `DEFAULT_WORKSPACE_ID` | `None` | `FOPOST_WORKSPACE_ID` | Workspace the management commands use when `--workspace` is left out |

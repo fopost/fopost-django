@@ -53,7 +53,7 @@ in a user's tests.
 
 Owned by the parent SDK; repeated here only where this repo has to agree with it.
 
-- Base URL `https://api.fopost.com/api/v1`, auth header `X-API-Key` (not Bearer)
+- Base URL `https://api.fopost.com/v1`, auth header `X-API-Key` (not Bearer)
 - Error envelope `{"error": "<code>", "message": "<text>"}`; 3 attempts, backoff, honouring
   `Retry-After` on 429
 - `FOPOST["BASE_URL"]`, `TIMEOUT`, and `MAX_RETRIES` are passed straight through to
