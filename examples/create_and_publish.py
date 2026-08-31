@@ -25,7 +25,7 @@ from fopost_django import client  # noqa: E402 — Django has to be set up first
 def main() -> None:
     workspaces = client.workspaces.list()
     if not workspaces:
-        raise SystemExit("No workspaces on this key. Create one at https://app.fopost.com.")
+        raise SystemExit("No workspaces on this key. Create one at https://fopost.com/dashboard.")
     workspace = workspaces[0]
 
     accounts = client.accounts.list(workspace_id=workspace.id)

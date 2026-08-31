@@ -108,7 +108,7 @@ def _resolve() -> FopostSettings:
         raise ImproperlyConfigured(
             f"settings.{SETTINGS_NAME}['API_KEY'] is required. Set it, or set the "
             "FOPOST_API_KEY environment variable. Create a key at "
-            "https://app.fopost.com/api-keys."
+            "https://fopost.com/dashboard/api-keys."
         )
 
     base_url = raw["BASE_URL"]

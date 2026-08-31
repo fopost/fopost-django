@@ -41,7 +41,7 @@ class FopostWebhookView(View):
         if not secret:
             raise ImproperlyConfigured(
                 f"settings.{SETTINGS_NAME}['WEBHOOK_SECRET'] is required to receive webhooks. "
-                "It is shown once, when the webhook is created at https://app.fopost.com."
+                "It is shown once, when the webhook is created at https://fopost.com/dashboard."
             )
 
         body = request.body

@@ -18,7 +18,7 @@ migrations**, because this package stores nothing.
 
 - Python 3.10 or newer
 - Django 4.2, 5.0, 5.1, or 5.2
-- A FoPost API key from [app.fopost.com/api-keys](https://app.fopost.com/api-keys)
+- A FoPost API key from [fopost.com/dashboard/api-keys](https://fopost.com/dashboard/api-keys)
 
 ## Install
 
@@ -144,7 +144,7 @@ urlpatterns = [
 ```
 
 That serves the receiver at `/fopost/webhook/` (reversible as `reverse("fopost:webhook")`). Register
-that URL at [app.fopost.com](https://app.fopost.com), copy the secret it shows you into
+that URL at [fopost.com/dashboard](https://fopost.com/dashboard), copy the secret it shows you into
 `FOPOST["WEBHOOK_SECRET"]`, and connect a receiver:
 
 ```python
