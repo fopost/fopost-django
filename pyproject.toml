@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fopost-django"
-version = "0.1.0"
+version = "0.1.1"
 description = "Official Django integration for the FoPost API. Schedule and publish to +30 social platforms from your Django project."
 readme = "README.md"
 license = "MIT"
