@@ -217,7 +217,7 @@ where you swap the transport by hand.
 
 ## The rest of the API
 
-Posts, accounts, workspaces, labels, AI, pagination, error classes and retry behaviour all live in
+Posts, accounts, workspaces, labels, AI, media, pagination, error classes and retry behaviour all live in
 the parent SDK. See [`fopost` on PyPI](https://pypi.org/project/fopost/) and its
 [README](https://github.com/fopost/fopost-python#readme); everything it documents works through
 `fopost_django.client` unchanged.
