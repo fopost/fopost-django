@@ -41,6 +41,10 @@ DEFAULTS: dict[str, Any] = {
     "MAX_RETRIES": 3,
     "DEFAULT_WORKSPACE_ID": None,
     "WEBHOOK_SECRET": None,
+    # The per-workspace secret of the blog Website target, shown once when the URL is saved.
+    "WEBSITE_SECRET": None,
+    # Dotted path to a callable that receives each published article.
+    "ON_ARTICLE_PUBLISHED": None,
     # Advanced: an httpx.Client to send through instead of a fresh one. Handy
     # for a corporate proxy, and for stubbing the transport in tests.
     "HTTP_CLIENT": None,
@@ -51,6 +55,7 @@ ENV_FALLBACKS = {
     "API_KEY": "FOPOST_API_KEY",
     "BASE_URL": "FOPOST_BASE_URL",
     "WEBHOOK_SECRET": "FOPOST_WEBHOOK_SECRET",
+    "WEBSITE_SECRET": "FOPOST_WEBSITE_SECRET",
     "DEFAULT_WORKSPACE_ID": "FOPOST_WORKSPACE_ID",
 }
 
@@ -65,6 +70,8 @@ class FopostSettings:
     max_retries: int
     default_workspace_id: str | None
     webhook_secret: str | None
+    website_secret: str | None
+    on_article_published: str | None
     http_client: Any | None
 
 
@@ -137,7 +144,7 @@ def _resolve() -> FopostSettings:
     if max_retries < 1:
         raise ImproperlyConfigured(f"settings.{SETTINGS_NAME}['MAX_RETRIES'] must be at least 1.")
 
-    for key in ("DEFAULT_WORKSPACE_ID", "WEBHOOK_SECRET"):
+    for key in ("DEFAULT_WORKSPACE_ID", "WEBHOOK_SECRET", "WEBSITE_SECRET", "ON_ARTICLE_PUBLISHED"):
         value = raw[key]
         if value is not None and not isinstance(value, str):
             raise ImproperlyConfigured(
@@ -151,6 +158,8 @@ def _resolve() -> FopostSettings:
         max_retries=max_retries,
         default_workspace_id=raw["DEFAULT_WORKSPACE_ID"],
         webhook_secret=raw["WEBHOOK_SECRET"],
+        website_secret=raw["WEBSITE_SECRET"],
+        on_article_published=raw["ON_ARTICLE_PUBLISHED"],
         http_client=raw["HTTP_CLIENT"],
     )
 
