@@ -24,6 +24,7 @@ __all__ = [
     "EVENT_SIGNALS",
     "WEBHOOK_EVENTS",
     "account_health_changed",
+    "article_published",
     "delivery_delayed",
     "delivery_failed",
     "delivery_published",
@@ -43,6 +44,8 @@ delivery_published = Signal()
 delivery_failed = Signal()
 delivery_delayed = Signal()
 account_health_changed = Signal()
+#: Also fired by the article receiver, with the typed ``article`` added.
+article_published = Signal()
 
 #: FoPost event name to the signal it fires.
 EVENT_SIGNALS: dict[str, Signal] = {
@@ -53,6 +56,7 @@ EVENT_SIGNALS: dict[str, Signal] = {
     "delivery.failed": delivery_failed,
     "delivery.delayed": delivery_delayed,
     "account.health_changed": account_health_changed,
+    "article.published": article_published,
 }
 
 #: The events a webhook can subscribe to, in the order the API lists them.
