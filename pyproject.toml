@@ -41,7 +41,13 @@ classifiers = [
 dependencies = ["fopost>=0.1,<1.0", "django>=4.2"]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-django>=4.8", "ruff>=0.6"]
+dev = [
+  "pytest>=8",
+  "pytest-django>=4.8",
+  "ruff>=0.6",
+  # Unreleased parent: swapped for the release tag once fopost ships the blog resource.
+  "fopost @ git+https://github.com/fopost/fopost-python.git@feature/blog-articles",
+]
 
 [project.urls]
 Homepage = "https://fopost.com"
@@ -49,6 +55,9 @@ Documentation = "https://fopost.com/docs"
 Repository = "https://github.com/fopost/fopost-django"
 Issues = "https://github.com/fopost/fopost-django/issues"
 Support = "https://fopost.com/contact"
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/fopost_django"]
