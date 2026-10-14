@@ -53,6 +53,8 @@ FOPOST = {
 | `MAX_RETRIES` | `3` | — | Attempts for a rate limited request |
 | `DEFAULT_WORKSPACE_ID` | `None` | `FOPOST_WORKSPACE_ID` | Workspace the management commands use when `--workspace` is left out |
 | `WEBHOOK_SECRET` | `None` | `FOPOST_WEBHOOK_SECRET` | Secret the webhook receiver verifies signatures against |
+| `WEBSITE_SECRET` | `None` | `FOPOST_WEBSITE_SECRET` | Secret of the blog Website target, which the article receiver verifies against |
+| `ON_ARTICLE_PUBLISHED` | `None` | — | Dotted path to a callable that receives each published article |
 | `HTTP_CLIENT` | `None` | — | Advanced: an `httpx.Client` to send through, for a proxy or a test transport |
 
 The whole dict is optional as long as `FOPOST_API_KEY` is in the environment. Django refuses to
@@ -173,6 +175,7 @@ Connect them from your app config's `ready()`, the usual way.
 | `delivery_failed` | `delivery.failed` |
 | `delivery_delayed` | `delivery.delayed` |
 | `account_health_changed` | `account.health_changed` |
+| `article_published` | `article.published` |
 | `webhook_received` | every verified delivery, whatever the event |
 
 Every receiver gets the same keyword arguments: `event`, `data`, `payload` (the whole envelope, with
@@ -187,6 +190,52 @@ is `csrf_exempt` and accepts `POST` only.
 
 **Failures are meant to propagate.** If a receiver raises, the response is a 5xx and FoPost retries
 the delivery with backoff. Keep receivers quick and idempotent, or hand the work to a task queue.
+
+## Receive blog articles
+
+With the blog Website target, FoPost POSTs every published article to your site as a signed
+webhook. The receiver is already part of `fopost_django.urls` (at `/fopost/articles/`), or mount it
+on its own in one line:
+
+```python
+from fopost_django.views import article_webhook
+
+urlpatterns = [
+    path("fopost/articles/", article_webhook),
+]
+```
+
+Save that URL as the Website target in the blog settings (`client.blog.update_settings(...)`), put
+the secret it shows you in `FOPOST["WEBSITE_SECRET"]`, and name the callable that stores each
+article:
+
+```python
+FOPOST = {
+    # ...
+    "WEBSITE_SECRET": os.environ["FOPOST_WEBSITE_SECRET"],
+    "ON_ARTICLE_PUBLISHED": "myapp.hooks.store_article",
+}
+```
+
+```python
+# myapp/hooks.py
+from fopost import ArticlePublishedPayload
+
+
+def store_article(article: ArticlePublishedPayload) -> str:
+    page = Page.objects.update_or_create(
+        slug=article.slug,
+        defaults={"title": article.title, "body": article.body_html},
+    )[0]
+    return page.get_absolute_url()
+```
+
+Return the URL the article now lives at and the receiver echoes it back as `{"url": "..."}`, so the
+dashboard can link to it; return `None` and it answers `{"ok": true}`. The `article_published`
+signal fires too, with an `article` keyword carrying the same typed payload, if you prefer a
+receiver over a setting. A forged, unsigned or stale delivery is a `401` before either runs, and the
+`article.test` the dashboard sends when you save the URL answers `{"ok": true}`. Image URLs in the
+payload stop working after six hours, so copy the files you want to keep.
 
 ## Testing your own code
 
