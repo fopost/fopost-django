@@ -89,7 +89,7 @@ supported setting rather than a monkeypatch.
 ## Parent dependency
 
 `fopost` is published on PyPI, so `pip install -e ".[dev]"` resolves it normally and CI needs no
-from-source shim. The pin is `fopost>=0.1,<1.0`.
+from-source shim. The pin is `fopost>=0.3,<1.0`.
 
 Note the floor: the parent requires **Python >= 3.10**, so this package does too. A 3.9 classifier
 would advertise an install that cannot resolve.
